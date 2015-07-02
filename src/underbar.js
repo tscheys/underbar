@@ -96,7 +96,7 @@
     var rejected = collection.slice(0);
     var filtered = _.filter(collection, test);
 
-    _.each(filtered, function(value) {
+    _.each(filtered, function (value) {
       rejected.splice(_.indexOf(rejected, value), 1);
     });
 
@@ -107,9 +107,11 @@
   _.uniq = function(array) {
     var uniq = [];
     _.each(uniq, function (value) {
-      if(_.indexOf(array, value) < 0) {uniq.push(value);}
+      if(_.indexOf(uniq, value) === - 1) {
+        uniq.push(value);
+        console.log(value);
+      }
     });
-    console.log(uniq)
     return uniq;
   };
 
@@ -150,7 +152,7 @@
   //  
   // You can pass in a starting value for the accumulator as the third argument
   // to reduce. If no starting value is passed, the first element is used as
-  // the accumulator, and is never passed to the iterator. In other words, in
+  // the  , and is never passed to the iterator. In other words, in
   // the case where a starting value is not passed, the iterator is not invoked
   // until the second element, with the first element as it's second argument.
   //  
@@ -165,6 +167,17 @@
   //   }); // should be 5, regardless of the iterator function passed in
   //          No accumulator is given so the first element is used.
   _.reduce = function(collection, iterator, accumulator) {
+    var copy = collection.slice(0);
+    if(arguments.length === 3) {
+      var s = accumulator;
+    } else {
+      var s = 0;
+    }
+
+    _.each(collection, function (value) {
+      s = iterator(s, value);
+    });
+    return s;
   };
 
   // Determine if the array or object contains a given value (using `===`).
