@@ -105,11 +105,12 @@
 
   // Produce a duplicate-free version of the array.
   _.uniq = function(array) {
+
     var uniq = [];
-    _.each(uniq, function (value) {
+
+    _.each(array, function (value) {
       if(_.indexOf(uniq, value) === - 1) {
         uniq.push(value);
-        console.log(value);
       }
     });
     return uniq;
