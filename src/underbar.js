@@ -206,15 +206,16 @@
 
   // Determine whether all of the elements match a truth test.
   _.every = function(collection, iterator) {
+    var args = arguments.length;
     if(collection.length === 0) {return true;}
     if(_.contains(collection, undefined)) {return false;}
-
-
-    return _.reduce(collection, function(current, value) {
-      var test = iterator(value);
-      if(current === false) {return false;}
+    var test;
+    return _.reduce(collection, function (current, value) {
+      test = (args === 2) ? iterator(value) : value;
+      if(current === false) {return false; }
       else if(test === true) {return true;}
       else if(test === false) {return false;}
+      else if(current === true) {return true;}
 
     },true);
     
