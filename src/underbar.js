@@ -225,7 +225,18 @@
 
   // Determine whether any of the elements pass a truth test. If no iterator is
   // provided, provide a default one
-  _.some = function(collection, iterator) {
+  _.some = function(collection, iterator) { //Needs refactoring. Does not use every
+    var args = arguments.length;
+    if(collection.length === 0) {return false;}
+    var test;
+    return _.reduce(collection, function (current, value) {
+      test = (args === 2) ? !!iterator(value) : value;
+      if(current === true) {return true;}
+      else if(test === false) {return false;}
+      else if(test === true) {return true;}
+      else if(current === false) {return false;}
+
+    }, false);
 
     // TIP: There's a very clever way to re-use every() here.
   };
