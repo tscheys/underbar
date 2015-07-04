@@ -322,6 +322,10 @@
   // already computed the result for the given argument and return that value
   // instead if possible.
   _.memoize = function(func) {
+
+var computed = [];
+
+
   };
 
   // Delays a function for the given number of milliseconds, and then calls
@@ -345,6 +349,15 @@
   // input array. For a tip on how to make a copy of an array, see:
   // http://mdn.io/Array.prototype.slice
   _.shuffle = function(array) {
+    var copy = array.slice(0);
+    var length = copy.length;
+    var shuffled = [];
+    for(var i = 0; i < length; i++) {
+      var s = Math.floor(Math.random()*(copy.length));
+      shuffled[i] = copy[s];
+      copy.splice(s,1);
+    }
+    return shuffled;
   };
 
 
