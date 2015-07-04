@@ -335,6 +335,13 @@ var computed = [];
   // parameter. For example _.delay(someFunction, 500, 'a', 'b') will
   // call someFunction('a', 'b') after 500ms
   _.delay = function(func, wait) {
+    var args = Array.prototype.slice.call(arguments);
+    var functionArgs = args.slice(2);
+
+    setTimeout(function () {
+      return func.apply(this,functionArgs);}
+    ,wait);
+
   };
 
 
@@ -350,14 +357,15 @@ var computed = [];
   // http://mdn.io/Array.prototype.slice
   _.shuffle = function(array) {
     var copy = array.slice(0);
-    var length = copy.length;
     var shuffled = [];
-    for(var i = 0; i < length; i++) {
+
+    for(var i = 0; i < array.length; i++) {
       var s = Math.floor(Math.random()*(copy.length));
       shuffled[i] = copy[s];
       copy.splice(s,1);
     }
-    return shuffled;
+    
+    return (shuffled === array) ? _.shuffle(array) : shuffled;
   };
 
 
