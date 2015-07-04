@@ -57,8 +57,6 @@
         iterator(collection[key], key, collection);
       }
     }
-
-
   };
 
   // Returns the index at which value can be found in the array, or -1 if value
@@ -261,11 +259,26 @@
   //     bla: "even more stuff"
   //   }); // obj1 now contains key1, key2, key3 and bla
   _.extend = function(obj) {
+    _.each(arguments, function (value) {
+      _.each(value, function (val, key) {
+        obj[key] = val;
+      });
+    });
+    return obj;
   };
 
   // Like extend, but doesn't ever overwrite a key that already
   // exists in obj
   _.defaults = function(obj) {
+    var args = Array.prototype.slice.call(arguments);
+    args.reverse();
+
+        _.each(args, function (value) {
+      _.each(value, function (val, key) {
+        obj[key] = val;
+      });
+    });
+    return obj;
   };
 
 
