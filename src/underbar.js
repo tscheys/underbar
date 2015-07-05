@@ -361,14 +361,20 @@ var computed = [];
   _.shuffle = function(array) {
     var copy = array.slice(0);
     var shuffled = [];
-
+    function randomize (originalIndex) { 
+      //This function was created to ensure shuffled array is not exactly equal to input array
+      //It uses recursion until we get an index different from the original index
+      var randomIndex = Math.floor(Math.random()*(copy.length));
+      return (randomIndex === originalIndex) ? randomize(originalIndex) : randomIndex; 
+    }
+ 
     for(var i = 0; i < array.length; i++) {
-      var s = Math.floor(Math.random()*(copy.length));
+      var s = randomize(i);
       shuffled[i] = copy[s];
       copy.splice(s,1);
     }
     
-    return (shuffled === array) ? _.shuffle(array) : shuffled;
+    return shuffled;
   };
 
 
