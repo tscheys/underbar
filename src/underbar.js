@@ -55,7 +55,7 @@
         iterator(collection[i], i , collection);
       }
     }
-    else if(Object.prototype.toString.call(collection) === "[object Object]") {
+    else if({}.toString.call(collection) === "[object Object]") {
       for(var key in collection) {
         iterator(collection[key], key, collection);
       }
@@ -82,7 +82,7 @@
   // Return all elements of an array that pass a truth test.
   _.filter = function(collection, test) {
     var filtered = [];
-    _.each(collection, function(value, i, array) {
+    _.each(collection, function(value) {
       if(test(value)) {
         filtered.push(value);
       }
