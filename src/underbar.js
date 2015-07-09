@@ -32,13 +32,16 @@
   // Return an array of the first n elements of an array. If n is undefined,
   // return just the first element.
   _.first = function(array, n) {
+    //NOTES: Ternary operator: if n is undefined just return first element else use slice for n elements
     return n === undefined ? array[0] : array.slice(0, n);
   };
 
   // Like first, but for the last elements. If n is undefined, return just the
   // last element.
   _.last = function(array, n) {
-    return n === undefined ? array[array.length - 1] : array.slice(n > array.length ? 0 : (array.length - n) ,array.length)
+    //NOTES: reverse array so we can use _.first to get the last elements. Then reverse again to put them back in the proper order
+    var copy = array.reverse();
+    return n === undefined ? _.first(copy) : _.first(copy,n).reverse();
   };
 
   // Call iterator(value, key, collection) for each element of collection.
@@ -261,8 +264,8 @@
   _.extend = function(obj) {
    var args = Array.prototype.slice.call(arguments);
 
-    _.each(args, function (objects) {
-      _.each(objects, function (val, key) {
+    _.each(args, function (object) {
+      _.each(object, function (val, key) {
         obj[key] = val;
       });
       
@@ -273,15 +276,16 @@
   // Like extend, but doesn't ever overwrite a key that already
   // exists in obj
   _.defaults = function(obj) {
+    var obj2 = {}
     var args = Array.prototype.slice.call(arguments);
-    args.reverse();
-
-        _.each(args, function (value) {
-      _.each(value, function (val, key) {
-        obj[key] = val;
+        _.each(args, function (object) {
+          _.each(object, function (val, key) {
+            if(obj[key] !== val) {
+            obj2[key] = val;
+          }
       });
     });
-    return obj;
+    return obj2;
   };
 
 
