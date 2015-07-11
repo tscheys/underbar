@@ -193,20 +193,11 @@
 
   // Determine whether all of the elements match a truth test.
   _.every = function(collection, iterator) {
-    var args = arguments.length;
-    if(collection.length === 0) {return true;}
-    if(_.contains(collection, undefined)) {return false;}
-    var test;
     return _.reduce(collection, function (current, value) {
-      test = (args === 2) ? !!iterator(value) : value;
-      if(current === false) {return false; }
-      else if(test === true) {return true;}
-      else if(test === false) {return false;}
-      else if(current === true) {return true;}
+      if(!current) {return false;}
+      else if(!!iterator(value)) {}
 
-    },true);
-    
-
+    }, true);
     // TIP: Try re-using   reduce() here.
   };
 
@@ -262,16 +253,16 @@
   // Like extend, but doesn't ever overwrite a key that already
   // exists in obj
   _.defaults = function(obj) {
-    var obj2 = {}
-    var args = Array.prototype.slice.call(arguments);
+    var args = Array.prototype.slice.call(arguments).slice(1);
         _.each(args, function (object) {
-          _.each(object, function (val, key) {
-            if(obj[key] !== val) {
-            obj2[key] = val;
+          _.each(object, function (value, key) {
+            if(_.identity(obj[key]) === undefined) {
+            obj[key] = value;
           }
+          
       });
     });
-    return obj2;
+    return obj;
   };
 
 
