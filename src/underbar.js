@@ -194,9 +194,9 @@
   // Determine whether all of the elements match a truth test.
   _.every = function(collection, iterator) {
     return _.reduce(collection, function (current, value) {
-      if(!current) {return false;}
-      else if(!!iterator(value)) {}
+      var test = (iterator !== undefined) ? !!iterator(value) : value;
 
+      return (test && current) ? true : false;
     }, true);
     // TIP: Try re-using   reduce() here.
   };
@@ -204,15 +204,9 @@
   // Determine whether any of the elements pass a truth test. If no iterator is
   // provided, provide a default one
   _.some = function(collection, iterator) { //Needs refactoring. Does not use every
-    var args = arguments.length;
-    if(collection.length === 0) {return false;}
-    var test;
     return _.reduce(collection, function (current, value) {
-      test = (args === 2) ? !!iterator(value) : value;
-      if(current === true) {return true;}
-      else if(test === false) {return false;}
-      else if(test === true) {return true;}
-      else if(current === false) {return false;}
+      var test = (iterator !== undefined) ? !!iterator(value) : value;
+      return (test || current) ? true : false;
 
     }, false);
 
@@ -313,12 +307,12 @@ return function () {
   var result;
   var argument = Array.prototype.slice.call(arguments)[0];
   _.each(computed, function(value) {
-    if(value[0] === argument) {result = value[1];}
+    if(value.arg === argument) {result = value.sol;}
   });
   if(result !== undefined) {return result;}
   else {
   result = func.apply(this,arguments);
-  computed.push([argument , result]);
+  computed.push({arg: argument , sol: result});
   return result;
 }
 }
