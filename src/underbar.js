@@ -309,8 +309,20 @@
 
 var computed = [];
 
-
-  };
+return function () {
+  var result;
+  var argument = Array.prototype.slice.call(arguments)[0];
+  _.each(computed, function(value) {
+    if(value[0] === argument) {result = value[1];}
+  });
+  if(result !== undefined) {return result;}
+  else {
+  result = func.apply(this,arguments);
+  computed.push([argument , result]);
+  return result;
+}
+}
+};
 
   // Delays a function for the given number of milliseconds, and then calls
   // it with the arguments supplied.
