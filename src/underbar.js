@@ -399,11 +399,25 @@ return function () {
   // Example:
   // _.zip(['a','b','c','d'], [1,2,3]) returns [['a',1], ['b',2], ['c',3], ['d',undefined]]
   _.zip = function() {
-    var args = Array.prototype.slice.call(arguments);
-    _.reduce(args, function (current, value) {
-      return current > value.length ? current : value.length;
-    }, 0);
-  };
+    var zipped = [];
+    var arrays = Array.prototype.slice.call(arguments);
+    var biggestArray = _.reduce(arrays, function (current, value) {
+      return value.length > current.length ? value : current; 
+    }, []);
+
+    _.each(biggestArray, function (value, index) {
+      var zip = [];
+      _.each(arrays, function (value) {
+        zip.push(value[index]);
+      });
+      zipped.push(zip);
+
+    });
+
+    return zipped;
+
+    };
+
 
   // Takes a multidimensional array and converts it to a one-dimensional array.
   // The new array should contain all elements of the multidimensional array.
@@ -445,6 +459,26 @@ return function () {
   // Take the difference between one array and a number of other arrays.
   // Only the elements present in just the first array will remain.
   _.difference = function(array) {
+        //var others = Array.prototype.slice.call(arguments, 1);
+
+        /*_.each(array, function (value) {
+          var isEverywhere = _.reduce(others, function (current, array) {
+            return (_.contains(array, value) && current) ? true : false;
+          });
+          if(isEverywhere) {array.splice(array.indexOf(value), 1);}
+        });
+
+        return array;*/
+
+        var discard = _.intersection.apply(this, arguments);
+
+        _.each(discard, function (value) {
+          array.splice(array.indexOf(value), 1)
+
+        });
+
+        return array;
+
   };
 
   // Returns a function, that, when invoked, will only be triggered at most once
