@@ -413,19 +413,33 @@ return function () {
   result = (typeof result === 'undefined') ? [] : result;
   
   _.each(nestedArray, function (value) {
-    if(Array.isArray(value)) {
-      _.flatten(value, result);
-    }
-    else {
-      result.push(value);
-    }
+    (Array.isArray(value)) ? _.flatten(value, result) : result.push(value);
   });
+
   return result;
   };
 
   // Takes an arbitrary number of arrays and produces an array that contains
   // every item shared between all the passed-in arrays.
   _.intersection = function() {
+
+
+    var others = Array.prototype.slice.call(arguments, 1);
+    var first = arguments[0];
+    var intersected = [];
+       
+    _.each(first, function (value) {
+
+      var isEverywhere =  _.reduce(others, function (current, array) {
+
+        return (_.contains(array, value) && current) ? true : false;
+
+      }, true);
+
+      if(isEverywhere) {intersected.push(value);}
+    });
+
+    return intersected;
   };
 
   // Take the difference between one array and a number of other arrays.
