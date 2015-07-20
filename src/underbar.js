@@ -306,9 +306,11 @@ var computed = [];
 return function () {
   var result;
   var argument = Array.prototype.slice.call(arguments)[0];
+
   _.each(computed, function(value) {
     if(value.arg === argument) {result = value.sol;}
   });
+
   if(result !== undefined) {return result;}
   else {
   result = func.apply(this,arguments);
@@ -317,6 +319,8 @@ return function () {
 }
 }
 };
+
+/* var memoAdd = _.memoize(function(a,b) {} */
 
   // Delays a function for the given number of milliseconds, and then calls
   // it with the arguments supplied.
@@ -354,7 +358,7 @@ return function () {
       var randomIndex = Math.floor(Math.random()*(copy.length));
       return (randomIndex === originalIndex) ? randomize(originalIndex) : randomIndex; 
     }
- 
+
     for(var i = 0; i < array.length; i++) {
       var s = randomize(i);
       shuffled[i] = copy[s];
@@ -376,6 +380,10 @@ return function () {
   // Calls the method named by functionOrKey on each value in the list.
   // Note: You will need to learn a bit about .apply to complete this.
   _.invoke = function(collection, functionOrKey, args) {
+      return function () {
+        return functionOrKey.apply(this, arguments);
+      
+    }
   };
 
   // Sort the object's values by a criterion produced by an iterator.
@@ -391,6 +399,10 @@ return function () {
   // Example:
   // _.zip(['a','b','c','d'], [1,2,3]) returns [['a',1], ['b',2], ['c',3], ['d',undefined]]
   _.zip = function() {
+    var args = Array.prototype.slice.call(arguments);
+    _.reduce(args, function (current, value) {
+      return current > value.length ? current : value.length;
+    }, 0);
   };
 
   // Takes a multidimensional array and converts it to a one-dimensional array.
@@ -398,6 +410,17 @@ return function () {
   //
   // Hint: Use Array.isArray to check if something is an array
   _.flatten = function(nestedArray, result) {
+  result = (typeof result === 'undefined') ? [] : result;
+  
+  _.each(nestedArray, function (value) {
+    if(Array.isArray(value)) {
+      _.flatten(value, result);
+    }
+    else {
+      result.push(value);
+    }
+  });
+  return result;
   };
 
   // Takes an arbitrary number of arrays and produces an array that contains
