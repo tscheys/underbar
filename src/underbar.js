@@ -446,7 +446,7 @@ return function () {
 
       var isEverywhere =  _.reduce(others, function (current, array) {
 
-        return (_.contains(array, value) && current) ? true : false;
+        return _.contains(array, value) && current;
 
       }, true);
 
@@ -459,25 +459,15 @@ return function () {
   // Take the difference between one array and a number of other arrays.
   // Only the elements present in just the first array will remain.
   _.difference = function(array) {
-        //var others = Array.prototype.slice.call(arguments, 1);
+    var difference = [];
+    var others = _.flatten(Array.prototype.slice.call(arguments, 1));
 
-        /*_.each(array, function (value) {
-          var isEverywhere = _.reduce(others, function (current, array) {
-            return (_.contains(array, value) && current) ? true : false;
-          });
-          if(isEverywhere) {array.splice(array.indexOf(value), 1);}
-        });
-
-        return array;*/
-
-        var discard = _.intersection.apply(this, arguments);
-
-        _.each(discard, function (value) {
-          array.splice(array.indexOf(value), 1)
-
-        });
-
-        return array;
+    _.each(array, function (value) {
+      if(!_.contains(others, value)) {
+        difference.push(value)
+      }
+    });
+    return difference;
 
   };
 
