@@ -369,7 +369,7 @@ return function () {
   };
 
 
-  /**
+  /*
    * EXTRA CREDIT
    * =================
    *
@@ -380,10 +380,17 @@ return function () {
   // Calls the method named by functionOrKey on each value in the list.
   // Note: You will need to learn a bit about .apply to complete this.
   _.invoke = function(collection, functionOrKey, args) {
-      return function () {
-        return functionOrKey.apply(this, arguments);
+    var result = [];
+
+    _.each(collection, function (value) {
+      result.push(functionOrKey.apply(this, value));
+
+    });
+
+    return result;
       
-    }
+         
+      
   };
 
   // Sort the object's values by a criterion produced by an iterator.
@@ -391,6 +398,30 @@ return function () {
   // of that string. For example, _.sortBy(people, 'name') should sort
   // an array of people by their name.
   _.sortBy = function(collection, iterator) {
+    if(typeof iterator === 'string') {
+      return collection.sort(function(a, b) {
+      if(a[iterator] > b[iterator]) {
+        return 1;
+      }
+      if(a[iterator] < b[iterator]) {
+        return -1;
+      }
+      return 0;
+
+      });
+    }
+    else {
+      return collection.sort(function(a, b) {
+        if(iterator(a) > iterator(b)) {
+          return 1;
+        }
+        if(iterator(a) < iterator(b)) {
+          return -1;
+        }
+        return 0;
+      });
+    }
+
   };
 
   // Zip together two or more arrays with elements of the same index
@@ -459,12 +490,13 @@ return function () {
   // Take the difference between one array and a number of other arrays.
   // Only the elements present in just the first array will remain.
   _.difference = function(array) {
+    //Try to get this working with intersection
     var difference = [];
     var others = _.flatten(Array.prototype.slice.call(arguments, 1));
 
     _.each(array, function (value) {
       if(!_.contains(others, value)) {
-        difference.push(value)
+        difference.push(value);
       }
     });
     return difference;
